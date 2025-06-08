@@ -1,6 +1,3 @@
 from odoo import models, fields
-# Data dokter
-
-
-
+# akun admin/operator
 

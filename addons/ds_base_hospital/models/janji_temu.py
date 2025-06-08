@@ -1,6 +1,2 @@
 from odoo import models, fields
-# Data dokter
-
-
-
-
+#  jadwal dan antrian

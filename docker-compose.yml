@@ -17,11 +17,11 @@ services:
     depends_on:
       - db
     ports:
-      - "14016:8069"
-      - "24016:8072" # live chat
+      - "12016:8069"
+      - "22016:8072" # live chat
     tty: true
-    command: odoo scaffold ds_base_hospital /mnt/extra-addons/
-    # command : --
+    # command: odoo scaffold ds_base_hospital /mnt/extra-addons/
+    command : --
     environment:
       - HOST=db
       - USER=odoo
