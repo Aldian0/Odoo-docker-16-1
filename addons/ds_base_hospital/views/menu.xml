@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <data>
-       <menuitem id="ds_hospital_menu" name="Rumah Sakit" sequence="10"/>
-       
+       <menuitem id="ds_base_hospital_menu_root" name="Rumah Sakit" sequence="0"/>
+       <!-- <menuitem id="ds_pasien_menu_categ" name="Pasien Detail" parent="ds_rumah_sakit_menu_root" sequence="10"/>
+       <menuitem id="ds_pasien_menu" name="Pasien" parent="ds_pasien_menu_master" sequence="30"/> -->
        <!-- <menuitem id="ds_base_hospital_menu_categ" name="Pendaftaran Pasien" parent="db_base_hospital_menu_root" sequence="1"/> -->
 
 
