@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-# from odoo.exceptions import ValidationError
+
 
 class DsPAsien(models.Model):
     _name = 'ds.pasien'
@@ -9,8 +9,20 @@ class DsPAsien(models.Model):
 
     name = fields.Char(string='Nama Lengkap', required=True)
     age = fields.Integer(string='Umur')
+    no_rm = fields.Char(string='No. Rekam Medis')
     nik = fields.Char(string='NIK', size=16)
-    gender = fields.Selection([('male','Male'),('female','Female')], string='Jenis Kelamin')
-    birth_date = fields.Date(string='Tanggal Lahir')
-    phone = fields.Char(string='Nomor Telepon')
-    address = fields.Text(string='Alamat')
+    jenis_kelamin = fields.Selection([('male','Male'),('female','Female')], string='Jenis Kelamin')
+    tanggal_lahir = fields.Date(string='Tanggal Lahir')
+    gol_darah = fields.Selection([
+        ('A', 'A'),
+        ('B', 'B'),
+        ('AB', 'AB'),
+        ('O', 'O')
+    ], string='Golongan Darah')
+    alamat = fields.Text(string='Alamat')
+    status = fields.Selection([
+        ('aktif', 'Aktif'),
+        ('nonaktif', 'Nonaktif')
+    ], string='Status', default='aktif')
+    telepon = fields.Char(string='Nomor Telepon')
+    email = fields.Text(string='Email')

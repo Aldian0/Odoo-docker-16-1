@@ -6,13 +6,13 @@
               <field name="name">ds.pasien.view.tree</field>
               <field name="model">ds.pasien</field>
               <field name="arch" type="xml">
-            <tree>
-
-            <!-- Add your fields here -->
-                  <field name="name"/>
-                  <field name="nik"/>
-                  <field name="gender"/>
-                  <field name="birth_date"/>
+                  <tree string="Daftar Pasien">
+                      <field name="no_rm"/>
+                      <field name="name"/>
+                      <field name="jenis_kelamin"/>
+                      <field name="tanggal_lahir"/>
+                      <field name="telepon"/>
+                      <field name="gol_darah"/>                      
                   </tree>
               </field>
             </record>
@@ -22,31 +22,26 @@
               <field name="name">ds.pasien.view.form</field>
               <field name="model">ds.pasien</field>
               <field name="arch" type="xml">
-                <form string="">
+                <form string="Pasien">
                   <sheet>
                     <group>
                       <!-- Add your fields here -->
-                        <field name="name"/>
-                  <field name="nik"/>
-                  <field name="gender"/>
-                  <field name="birth_date"/>
-                  <field name="phone"/>
-                  <field name="address"/>
-                      
+                    <field name="name"/>
+                    <field name="no_rm"/>
+                    <field name="jenis_kelamin"/>
+                    <field name="tanggal_lahir"/>
+                    <field name="alamat"/>
+                    <field name="telepon"/>
+                    <field name="email"/>
+                    <field name="gol_darah"/>
+                    <field name="status"/>
+
                     </group>
                   </sheet>
                 </form>
               </field>
             </record>
             
-                    <!-- Add your fields here -->
-                  <!-- <field name="nama"/>
-                  <field name="nik"/>
-                  <field name="gender"/>
-                  <field name="birth_date"/>
-                  <field name="phone"/>
-                  <field name="address"/> -->
-
         <!-- ds.pasien action window -->
         <record id="ds_pasien_action" model="ir.actions.act_window">
             <field name="name">Rumah Sakit</field>
