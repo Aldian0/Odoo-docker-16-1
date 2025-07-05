@@ -23,25 +23,118 @@
               <field name="model">ds.pasien</field>
               <field name="arch" type="xml">
                 <form string="Pasien">
-                  <sheet>
-                    <group>
-                      <!-- Add your fields here -->
-                    <field name="name"/>
-                    <field name="no_rm"/>
-                    <field name="jenis_kelamin"/>
-                    <field name="tanggal_lahir"/>
-                    <field name="alamat"/>
-                    <field name="telepon"/>
-                    <field name="email"/>
-                    <field name="gol_darah"/>
-                    <field name="status"/>
 
-                    </group>
-                  </sheet>
-                </form>
+                 <!-- Header: Tombol dan Status -->
+                  <header>
+                        <button name="action_confirm" states="proses" type="object" string="Konfirmasi" class="oe_highlight"/>
+                         <button name="action_progress" states="draft" type="object" string="Proses" class="oe_highlight"/>
+                        <!-- <button name="action_cancel" string="Dibatalkan" states="done" type="object"/> -->
+                        <button name="action_draft" string="Kembali ke Draft" states="done" type="object" groups="ds_base_hospital.group_hospital_opr"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,process,done"/>
+                        <button name="action_confirm" string="Konfirmasi" type="object" states="draft"/>
+                      </header>
+                    </form>
+                  <sheet>
+                    <div class="oe_title">
+                          <h1>
+                              <field id="individual" widget="text" class="text-break" name="name" default_focus="1" placeholder="Rumah Sakit 001"/>
+                          </h1>
+                    </div>
+                      <notebook>
+
+                      <!-- Tab: Data Pribadi -->
+                        <page name="Data Pasien" string="Data Pribadi Pasien">
+                      <group>
+                      <!-- Add your fields here -->
+                      <field name="name_id"/>
+                      <field name="no_rm"/>
+                      <field name="jenis_kelamin" widget="radio"/>
+                      <field name="tanggal_lahir"/>
+                      <field name="tempat_lahir"/>
+                      <field name="gol_darah"/>
+                      <field name="status_perkawinan"/>
+
+                   </group> 
+                  </page>
+
+                      <!-- Tab: Kontak -->
+                        <page name="Kontak" string="Kontak Pasien">
+                      <group>
+                      <!-- Add your fields here -->
+                      <field name="telepon"/>
+                      <field name="email"/>
+                      <field name="alamat"/>
+                      <field name="kode_pos"/>
+
+                        </group> 
+                      </page>
+
+                      <group>
+                        <field name="kota_id"/>
+                        <field name="kabupaten_id"/>
+                        <field name="kecamatan_id"/>
+                        <field name="desa_id"/>
+                      </group>
+
+                      <!-- Tab: Darurat -->
+                      <page string="Kontak Darurat">
+                  <group>
+                    <field name="kontak_darurat_nama"/>
+                    <field name="kontak_darurat_telepon"/>
+                    <field name="kontak_darurat_hubungan"/>
+                  </group>
+                </page>
+                
+                <!-- Tab: Administrasi -->
+                <page string="Administrasi">
+                  <group>
+                    <field name="penyedia_asuransi"/>
+                    <field name="nomor_asuransi"/>
+                    <field name="tanggal_registrasi"/>
+                    <field name="catatan"/>
+                  </group>
+                </page>
+
+                 </notebook>
+
+                </sheet>
               </field>
             </record>
+        
+        <!-- ds_create_pasie action window -->
+        <record id="ds_create_pasien_action" model="ir.actions.act_window">
+          <field name="name">Tambah Pasien</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="res_model">ds.pasien</field>
+          <field name="view_mode">tree,form</field>
+          <field name="domain">[]</field>
+          <field name="context">{}</field>
+          <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+              <!-- Add Text Here -->
+            </p><p>
+              <!-- More details about what a user can do with this object will be OK --> 
             
+            </p>
+          </field>
+        </record>
+        
+        <!-- ds.pasien action window -->
+        <record id="ds_pasien_action" model="ir.actions.act_window">
+          <field name="name">Pasien</field>
+          <field name="res_model">ds.pasien</field>
+          <field name="view_mode">tree,form</field>
+          <field name="context">{}</field>
+        </record>
+
+        <!-- ds.pasien action window -->
+        <!-- <record id="ds_pasien_action" model="ir.actions.act_window">
+          <field name="name">Manajemen Pasien</field>
+          <field name="res_model">ds.pasien</field>
+          <field name="view_mode">tree,form</field>
+          <field name="context">{}</field>
+        </record> -->
+
         <!-- ds.pasien action window -->
         <record id="ds_pasien_action" model="ir.actions.act_window">
             <field name="name">Rumah Sakit</field>
@@ -57,6 +150,8 @@
                 </p>
             </field>
         </record>
-        <menuitem id="ds_hospital_menu_root" name="Rumah Sakit" action="ds_pasien_action" sequence="0"/> 
+        <menuitem id="menu_ds_hospital_root" name="Rumah Sakit" action="ds_pasien_action" sequence="10"/> 
+        <menuitem id="ds_menu_pasien_root" name="Pasien" parent="menu_ds_hospital_root" sequence="20"/>
+        <!-- <menuitem id="ds_menu_pasien_manage" name="Manajemen Pasien" parent="ds_menu_pasien_root" action="action_ds_pasien" sequence = "30"/> -->
         </data>
 </odoo>
