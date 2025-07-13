@@ -70,10 +70,11 @@
                       </page>
 
                       <group>
-                        <field name="kota_id"/>
-                        <field name="kabupaten_id"/>
-                        <field name="kecamatan_id"/>
-                        <field name="desa_id"/>
+                        <field name="propinsi_id"/>
+                        <field name="kota_id" domain="[('propinsi_id', '=', parent.propinsi_id)]"/>
+                        <field name="kabupaten_id" domain="[('kota_id', '=', parent.kota_id)]"/>
+                        <field name="kecamatan_id" domain="[('kabupaten_id', '=', parent.kabupaten_id)]"/>
+                        <field name="desa_id" domain="[('kecamatan_id', '=', parent.kecamatan_id)]"/>
                       </group>
 
                       <!-- Tab: Darurat -->
@@ -150,8 +151,15 @@
                 </p>
             </field>
         </record>
+
+        <record id="action_ds_pasien" model="ir.actions.act_window">
+            <field name="name">Data Pasien</field>
+            <field name="res_model">ds.pasien</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
         <menuitem id="menu_ds_hospital_root" name="Rumah Sakit" action="ds_pasien_action" sequence="10"/> 
         <menuitem id="ds_menu_pasien_root" name="Pasien" parent="menu_ds_hospital_root" sequence="20"/>
-        <!-- <menuitem id="ds_menu_pasien_manage" name="Manajemen Pasien" parent="ds_menu_pasien_root" action="action_ds_pasien" sequence = "30"/> -->
+        <menuitem id="ds_menu_pasien_manage" name="Manajemen Pasien" parent="ds_menu_pasien_root" action="action_ds_pasien" sequence = "30"/>
         </data>
 </odoo>

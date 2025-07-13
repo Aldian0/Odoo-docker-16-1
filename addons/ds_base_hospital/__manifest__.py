@@ -29,6 +29,8 @@
         'views/templates.xml',
         'views/menu.xml',
         'views/pasien.xml',
+        
+        
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,19 +1,52 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+
+
 
 class DsPAsien(models.Model):
     _name = 'ds.pasien'
     _description = 'Ds Pasien'
+    # _inherit     = ['mail.thread', 'mail.activity.mixin']
+
+    # READONLY_STATES         = {'proses': [('readonly', True)], 'done': [('readonly', True)]}
+    # STATE = [
+    #     ('draft', 'Draft'),
+    #     ('proses', 'Proses'),
+    #     ('done', 'Done'),
+    # ]
+
+    # state                   = fields.Selection(string='Status', selection=STATE, default='draft', required=True, copy=False)
 
 
+    name                    = fields.Char(string='Rumah Sakit', required=True)
+    name_id                 = fields.Char(string='Nama Lengkap', required=True)
+    tempat_lahir            = fields.Char(string="Tempat Lahir")
+    email                   = fields.Char(string='Email')
 
-    name = fields.Char(string='Rumah Sakit', required=True)
-    name_id = fields.Char(string='Nama Lengkap', required=True)
-    image = fields.Image("Foto Pasien")
-    age = fields.Integer(string='Umur')
-    no_rm = fields.Char(string='No. Rekam Medis', readonly=True, copy=False, default='New')
-    nik = fields.Char(string='NIK', size=16)
-    jenis_kelamin = fields.Selection([('male','Laki-Laki'),('female','Perempuan')], string='Jenis Kelamin')
+    kontak_darurat_nama     = fields.Char(string='Nama Kontak Darurat')
+    kontak_darurat_telepon  = fields.Char(string="Telepon Darurat")
+    kontak_darurat_hubungan = fields.Char(string="Hubungan")
+    nomor_asuransi          = fields.Char(string="Nomor Asuransi")
+
+    propinsi_id             = fields.Many2one('wilayah.propinsi', string="Propinsi")
+    kota_id                 = fields.Many2one('wilayah.kota', string="Kota")
+    kabupaten_id            = fields.Many2one('wilayah.kabupaten', string="Kabupaten")
+    kecamatan_id            = fields.Many2one('wilayah.kecamatan', string="Kecamatan")
+    desa_id                 = fields.Many2one('wilayah.desa', string="Desa")
+    alamat                  = fields.Text(string='Alamat')
+
+    age                     = fields.Integer(string='Umur')
+    no_rm                   = fields.Char(string='No. Rekam Medis', readonly=True, copy=False, default='New')
+    nik                     = fields.Char(string='NIK', size=16)
+    kode_pos                = fields.Char(string='Kode Pos')
+    telepon                 = fields.Char(string='Nomor Telepon')
+
+    tanggal_registrasi      = fields.Date(string="Tanggal Registrasi", default=fields.Date.today)
+    catatan                 = fields.Text(string="Catatan")
+
+    jenis_kelamin = fields.Selection([
+        ('male','Laki-Laki'),
+        ('female','Perempuan')
+        ], string='Jenis Kelamin')
     tanggal_lahir = fields.Date(string='Tanggal Lahir')
     gol_darah = fields.Selection([
         ('A', 'A'),
@@ -26,39 +59,34 @@ class DsPAsien(models.Model):
         ('married', 'Menikah'),
         ('divorce', 'Cerai'),
     ], string="Status Pernikahan")
-    tempat_lahir = fields.Char(string="Tempat Lahir")
-    alamat = fields.Text(string='Alamat')
     status = fields.Selection([
         ('aktif', 'Aktif'),
         ('nonaktif', 'Nonaktif')
     ], string='Status', default='aktif')
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('confirm', 'Terkonfirmasi'),
+        ('confirm', 'Dikonfirmasi'),
         ('proses', 'Diproses'),
         ('done', 'Selesai'),
     ], default='draft', string="Status")
+    penyedia_asuransi = fields.Selection([
+        ('allianz', 'Allianz'),
+        ('prudential', 'Prudential'),
+        ('aia', 'AIA'),
+        ('manulife', 'Manulife'),
+        ('axa mandiri', 'AXA Mandiri'),
+        ('sinarmas msig life', 'Sinarmas MSIG Life'),
+        ('bri life', 'BRI Life'),
+        ('bps kesehatan', 'BPJS Kesehatan'),
+    ], string="Asuransi")
 
-    kota_id = fields.Char(string="Kota")
-    kabupaten_id = fields.Char(string="Kabupaten")
-    kecamatan_id = fields.Char(string="Kecamatan")
-    desa_id = fields.Char(string="Desa")
+    @api.onchange('propinsi_id')
+    def _onchange_propinsi(self):
+        self.kota_id = False
+        self.kabupaten_id = False
+        self.kecamatan_id = False
+        self.desa_id = False
 
-    telepon = fields.Char(string='Nomor Telepon')
-    email = fields.Char(string='Email')
-    alamat = fields.Text(string='Alamat')
-    kota = fields.Char(string='Kota')
-    provinsi = fields.Char(string='Provinsi')
-    kode_pos = fields.Char(string='Kode Pos')
-
-    kontak_darurat_nama = fields.Char(string='Nama Kontak Darurat')
-    kontak_darurat_telepon = fields.Char("Telepon Darurat")
-    kontak_darurat_hubungan = fields.Char("Hubungan")
-
-    penyedia_asuransi = fields.Char("Asuransi")
-    nomor_asuransi = fields.Char("Nomor Asuransi")
-    tanggal_registrasi = fields.Date("Tanggal Registrasi", default=fields.Date.today)
-    catatan = fields.Text("Catatan")
 
     @api.model
     def create(self, vals):
@@ -81,6 +109,8 @@ class DsPAsien(models.Model):
     def action_done(self):
         for rec in self:
             rec.state = 'done'
+
+
 
 # class DsWilayah (models.Models):
 #     _name = 'wilayah.kota'
