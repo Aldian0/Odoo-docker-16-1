@@ -29,6 +29,7 @@
         'views/templates.xml',
         'views/menu.xml',
         'views/pasien.xml',
+        'views/wilayah.xml',
         
         
     ],

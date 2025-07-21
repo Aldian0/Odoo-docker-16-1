@@ -68,16 +68,16 @@
 
                         </group> 
                       </page>
-
+                      <page name="Data Wilayah" string="Data Wilayah Pasien">
                       <group>
                         <field name="propinsi_id"/>
-                        <field name="kota_id" domain="[('propinsi_id', '=', parent.propinsi_id)]"/>
-                        <field name="kabupaten_id" domain="[('kota_id', '=', parent.kota_id)]"/>
-                        <field name="kecamatan_id" domain="[('kabupaten_id', '=', parent.kabupaten_id)]"/>
-                        <field name="desa_id" domain="[('kecamatan_id', '=', parent.kecamatan_id)]"/>
+                        <field name="kota_id" domain="[('propinsi_id', '=', propinsi_id)]"/>
+                        <field name="kecamatan_id" domain="[('kota_id', '=', kota_id)]"/>
+                        <field name="desa_id" domain="[('kecamatan_id', '=', kecamatan_id)]"/>
                       </group>
+                      </page>
 
-                      <!-- Tab: Darurat -->
+                      <!-- Tab:Kontak Darurat -->
                       <page string="Kontak Darurat">
                   <group>
                     <field name="kontak_darurat_nama"/>
