@@ -27,7 +27,7 @@ class DsPAsien(models.Model):
     kontak_darurat_hubungan = fields.Char(string="Hubungan")
     nomor_asuransi          = fields.Char(string="Nomor Asuransi")
 
-    propinsi_id             = fields.Many2one('wilayah.propinsi', string="Propinsi")
+    propinsi_id             = fields.Many2one('wilayah.propinsi', string="Provinsi")
     kota_id                 = fields.Many2one('wilayah.kota', string="Kota")
     kabupaten_id            = fields.Many2one('wilayah.kabupaten', string="Kabupaten")
     kecamatan_id            = fields.Many2one('wilayah.kecamatan', string="Kecamatan")
@@ -110,6 +110,26 @@ class DsPAsien(models.Model):
         for rec in self:
             rec.state = 'done'
 
+class DsDataPasien(models.Model):
+    _name = 'ds.data.pasien'
+    _description = 'Ds Data Pasien'
+
+    name_id                 = fields.Char(string='Nama Lengkap', required=True)
+    no_rm                   = fields.Char(string='No. Rekam Medis')
+    nik                     = fields.Char(string='NIK', size=16)
+    jenis_kelamin = fields.Selection([
+        ('male','Laki-Laki'),
+        ('female','Perempuan')
+        ], string='Jenis Kelamin')
+    tempat_lahir            = fields.Char(string='Tempat Lahir')
+    tanggal_lahir           = fields.Date(string='Tanggal Lahir')
+    alamat                  = fields.Text(string='Alamat')
+    telepon                 = fields.Char(string='Nomor Telepon')
+    email                   = fields.Char(string='Email')
+    status = fields.Selection([
+        ('aktif', 'Aktif'),
+        ('nonaktif', 'Nonaktif')
+    ], string='Status', default='aktif')
 
 
 # class DsWilayah (models.Models):

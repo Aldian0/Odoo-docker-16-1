@@ -101,44 +101,72 @@
                 </sheet>
               </field>
             </record>
-        
-        <!-- ds_create_pasie action window -->
-        <record id="ds_create_pasien_action" model="ir.actions.act_window">
-          <field name="name">Tambah Pasien</field>
-          <field name="type">ir.actions.act_window</field>
-          <field name="res_model">ds.pasien</field>
-          <field name="view_mode">tree,form</field>
-          <field name="domain">[]</field>
-          <field name="context">{}</field>
-          <field name="help" type="html">
-            <p class="oe_view_nocontent_create">
-              <!-- Add Text Here -->
-            </p><p>
-              <!-- More details about what a user can do with this object will be OK --> 
-            
-            </p>
+
+        <!-- ds.data.pasien tree view -->
+        <record id="ds_data_pasien_view_tree" model="ir.ui.view">
+          <field name="name">ds.data.pasien.view.tree</field>
+          <field name="model">ds.data.pasien</field>
+          <field name="arch" type="xml">
+            <tree string="Daftar Pasien" default_order="create_date desc">
+              <field name="name_id"/>
+              <field name="no_rm"/>
+              <field name="nik"/>
+              <field name="jenis_kelamin"/>
+              <field name="tempat_lahir"/>
+              <field name="status"/>
+            </tree>
           </field>
         </record>
-        
-        <!-- ds.pasien action window -->
-        <record id="ds_pasien_action" model="ir.actions.act_window">
-          <field name="name">Pasien</field>
-          <field name="res_model">ds.pasien</field>
-          <field name="view_mode">tree,form</field>
-          <field name="context">{}</field>
+
+        <!-- ds.data.pasien form view -->
+        <record id="ds_data_pasien_view_form" model="ir.ui.view">
+          <field name="name">ds.data.pasien.view.form</field>
+          <field name="model">ds.data.pasien</field>
+          <field name="arch" type="xml">
+            <form string="Data Pasien">
+              <sheet>
+                <group>
+                  <field name="name_id"/>
+                  <field name="no_rm"/>
+                  <field name="nik"/>
+                  <field name="jenis_kelamin"/>
+                </group>
+                <group>
+                  <field name="tanggal_lahir"/>
+                  <field name="alamat"/>
+                  <field name="status"/>
+                </group>
+              <notebook>
+                  <page string="Kontak">
+                <group>
+                  <field name="telepon"/>
+                  <field name="email"/>
+                </group>
+                    
+                  </page>
+                </notebook>
+              </sheet>
+            </form>
+          </field>
         </record>
 
-        <!-- ds.pasien action window -->
-        <!-- <record id="ds_pasien_action" model="ir.actions.act_window">
-          <field name="name">Manajemen Pasien</field>
-          <field name="res_model">ds.pasien</field>
-          <field name="view_mode">tree,form</field>
-          <field name="context">{}</field>
-        </record> -->
+        <!-- ds.data.pasien action window -->
+        <record id="ds_data_pasien_action" model="ir.actions.act_window">
+        <field name="name">Data Pasien</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ds.data.pasien</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">Buat pasien baru</p>
+          <p>Silakan tambahkan data pasien seperti nama, nomor rekam medis, dan informasi lainnya.</p>
+        </field>
+      </record>
+
+
 
         <!-- ds.pasien action window -->
         <record id="ds_pasien_action" model="ir.actions.act_window">
-            <field name="name">Rumah Sakit</field>
+            <field name="name">Pasien</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">ds.pasien</field>
             <field name="view_mode">tree,form</field>
@@ -152,14 +180,9 @@
             </field>
         </record>
 
-        <record id="action_ds_pasien" model="ir.actions.act_window">
-            <field name="name">Data Pasien</field>
-            <field name="res_model">ds.pasien</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-
-        <menuitem id="menu_ds_hospital_root" name="Rumah Sakit" action="ds_pasien_action" sequence="10"/> 
-        <menuitem id="ds_menu_pasien_root" name="Pasien" parent="menu_ds_hospital_root" sequence="20"/>
-        <menuitem id="ds_menu_pasien_manage" name="Manajemen Pasien" parent="ds_menu_pasien_root" action="action_ds_pasien" sequence = "30"/>
+        <menuitem id="menu_ds_hospital_root" name="Pasien" parent="ds_base_hospital_menu_root" action="ds_pasien_action" sequence="10"/> 
+        <menuitem id="menu_data_pasien_act" name="Data Pasien" parent="ds_pengaturan_menu_categ" action="ds_data_pasien_action" sequence="20"/>
+        <!-- <menuitem id="ds_menu_pasien_root" name="Pasien" parent="menu_ds_hospital_root" sequence="20"/> -->
+        <!-- <menuitem id="ds_menu_pasien_manage" name="Manajemen Pasien" parent="ds_menu_pasien_root" action="action_ds_pasien" sequence = "30"/> -->
         </data>
 </odoo>
