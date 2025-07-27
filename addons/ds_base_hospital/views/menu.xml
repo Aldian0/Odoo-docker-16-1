@@ -2,7 +2,8 @@
 <odoo>
     <data>
        <menuitem id="ds_base_hospital_menu_root" name="Rumah Sakit" action="ds_pasien_action" sequence="0"/>
-       <menuitem id="ds_pengaturan_menu_categ" name="Daerah" parent="ds_base_hospital_menu_root" sequence="10"/> 
+       <menuitem id="ds_pasien_menu_categ" name="Pasien" parent="ds_base_hospital_menu_root" sequence="10"/> 
+       <menuitem id="ds_pengaturan_menu_categ" name="Daerah" parent="ds_base_hospital_menu_root" sequence="20"/> 
        <!-- <menuitem id="ds_menu_master_data_pasien_categ" name="Data Pasien" parent="ds_base_hospital_menu_root" sequence="20"/> -->
        
 

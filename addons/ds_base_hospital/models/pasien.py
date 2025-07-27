@@ -7,14 +7,14 @@ class DsPAsien(models.Model):
     _description = 'Ds Pasien'
     # _inherit     = ['mail.thread', 'mail.activity.mixin']
 
-    # READONLY_STATES         = {'proses': [('readonly', True)], 'done': [('readonly', True)]}
-    # STATE = [
-    #     ('draft', 'Draft'),
-    #     ('proses', 'Proses'),
-    #     ('done', 'Done'),
-    # ]
+    READONLY_STATES         = {'proses': [('readonly', True)], 'done': [('readonly', True)]}
+    STATE = [
+        ('draft', 'Draft'),
+        ('proses', 'Proses'),
+        ('done', 'Done'),
+    ]
 
-    # state                   = fields.Selection(string='Status', selection=STATE, default='draft', required=True, copy=False)
+
 
 
     name                    = fields.Char(string='Rumah Sakit', required=True)
@@ -32,6 +32,7 @@ class DsPAsien(models.Model):
     kabupaten_id            = fields.Many2one('wilayah.kabupaten', string="Kabupaten")
     kecamatan_id            = fields.Many2one('wilayah.kecamatan', string="Kecamatan")
     desa_id                 = fields.Many2one('wilayah.desa', string="Desa")
+
     alamat                  = fields.Text(string='Alamat')
 
     age                     = fields.Integer(string='Umur')
@@ -130,6 +131,54 @@ class DsDataPasien(models.Model):
         ('aktif', 'Aktif'),
         ('nonaktif', 'Nonaktif')
     ], string='Status', default='aktif')
+
+class DsAlergiPasien(models.Model):
+    _name = 'ds.alergi.pasien'
+    _description = 'Ds Alergi Pasien'
+
+    name = fields.Char(string='Nama Alergi', required=True)
+    deskripsi = fields.Text(string='Deskripsi')
+    pasien_id = fields.Many2one('ds.pasien', string='Pasien', required=True)
+
+class DsKunjungan(models.Model):
+    _name = 'ds.kunjungan'
+    _description = 'Ds Kunjungan'
+
+    pasien_id       = fields.Many2one('ds.pasien', string='Pasien', required=True)
+    tanggal         = fields.Date(string='Tanggal Kunjungan', required=True)
+    poli_id         = fields.Many2one('ds.poli', string='Poli Tujuan')
+    dokter_id       = fields.Many2one('res.users', string='Dokter')
+    keluhan         = fields.Text(string='Keluhan')
+    diagnosis_awal  = fields.Text(string='Diagnosis Awal')
+    rujukan         = fields.Selection([
+        ('lanjutan', 'Pemeriksaan Lanjutan'),
+        ('rawat_inap', 'Rawat Inap'),
+        ('selesai', 'Selesai')
+    ], string='Rujukan') 
+    upload_hasil_riwayat_kunjungan  = fields.Binary(string='Upload Hasil Gambar')
+    keterangan                      = fields.Text(string='Keterangan',  compute='_compute_peringatan')
+    
+
+    data_hasil_riwayat_kunjungan_ids    = fields.One2many('ds.kunjungan', 'pasien_id', string='Upload Hasil Riwayat Kunjungan')
+
+class DsPoli(models.Model):
+    _name = 'ds.poli'
+    _description = 'Data Poli Rumah Sakit'
+
+    pasien_id = fields.Many2one('ds.pasien', string='Pasien', required=True)
+    nama_poli = fields.Selection([
+        ('Umum', 'Poli Umum'),
+        ('Gigi', 'Poli Gigi'),
+        ('Anak', 'Poli Anak'),
+        ('Kandungan', 'Poli Kandungan'),
+        ('Penyakit Dalam', 'Poli Penyakit Dalam'),
+        ('Bedah', 'Poli Bedah'),
+        ('THT', 'Poli THT'),
+        ('Mata', 'Poli Mata'),
+        ('Saraf', 'Poli Saraf'),
+        ('Kulit dan Kelamin', 'Poli Kulit dan Kelamin')
+    ], string='Nama Poli')
+    keterangan = fields.Text(string='Keterangan')
 
 
 # class DsWilayah (models.Models):

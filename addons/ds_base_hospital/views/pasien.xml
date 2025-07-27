@@ -150,6 +150,165 @@
           </field>
         </record>
 
+        <!-- ds.alergi.pasien tree view -->
+        <record id="ds_alergi_pasien_view_tree" model="ir.ui.view">
+          <field name="name">ds.alergi.pasien.view.tree</field>
+          <field name="model">ds.alergi.pasien</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="name"/>
+              <field name="pasien_id"/>
+              
+            </tree>
+          </field>
+        </record>
+
+        <!-- ds.alergi.pasien form view -->
+        <record id="ds_alergi_pasien_view_form" model="ir.ui.view">
+          <field name="name">ds.alergi.pasien.view.form</field>
+          <field name="model">ds.alergi.pasien</field>
+          <field name="arch" type="xml">
+            <form string="Riwayat Alergi Pasien">
+              <sheet>
+                <group>
+                  <field name="name"/>
+                  <field name="deskripsi"/>
+                  <field name="pasien_id"/>
+                  
+                </group>
+              </sheet>
+            </form>
+          </field>
+        </record>
+
+        <!-- ds.kunjungan tree view -->
+        <record id="ds_kunjungan_view_tree" model="ir.ui.view">
+          <field name="name">ds.kunjungan.view.tree</field>
+          <field name="model">ds.kunjungan</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="pasien_id"/>
+              <field name="tanggal"/>
+              <field name="poli_id"/>
+              <field name="dokter_id"/>
+              <field name="rujukan"/>
+              
+            </tree>
+          </field>
+        </record>
+
+        <!-- ds.kunjungan form view -->
+        <record id="ds_kunjungan_view_form" model="ir.ui.view">
+          <field name="name">ds.kunjungan.view.form</field>
+          <field name="model">ds.kunjungan</field>
+          <field name="arch" type="xml">
+            <form string="Riwayat Kunjungan">
+              <sheet>
+                <group>
+                  <field name="pasien_id"/>
+                  <field name="tanggal"/>
+                  <field name="poli_id"/>
+                  <field name="dokter_id"/>
+                  <field name="keluhan"/>
+                  <field name="diagnosis_awal"/>
+                  <field name="rujukan"/>
+                  
+                </group>
+              </sheet>
+            <notebook>
+              <page name="upload" string="Hasil Riwayat Kunjungan">
+                  <field name="data_hasil_riwayat_kunjungan_ids">
+                  <tree editable="1">
+                  <field name="pasien_id"/>
+                  <field name="upload_hasil_riwayat_kunjungan" widget="image"  options="{'size': [200, 200]}"/>
+                  <field name="keterangan"/>
+                 </tree>
+                </field>
+               </page>
+              </notebook>
+            </form>
+          </field>
+        </record>
+
+        <!-- ds.poli tree view -->
+        <record id="ds_poli_view_tree" model="ir.ui.view">
+          <field name="name">ds.poli.view.tree</field>
+          <field name="model">ds.poli</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="pasien_id"/>
+              <field name="keterangan"/>
+              
+            </tree>
+          </field>
+        </record>
+
+        <!-- ds.poli form view -->
+        <record id="ds_poli_view_form" model="ir.ui.view">
+          <field name="name">ds.poli.view.form</field>
+          <field name="model">ds.poli</field>
+          <field name="arch" type="xml">
+            <form string="Data Poli">
+              <sheet>
+                <group>
+                  <field name="pasien_id"/>
+                  <field name="nama_poli"/>
+                  <field name="keterangan"/>
+                  
+                </group>
+              </sheet>
+            </form>
+          </field>
+        </record>
+
+        <!-- ds.poli action window -->
+        <record id="ds_poli_action" model="ir.actions.act_window">
+          <field name="name">Data Poli</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="res_model">ds.poli</field>
+          <field name="view_mode">tree,form</field>
+          <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+              <!-- Add Text Here -->
+            </p><p>
+              <!-- More details about what a user can do with this object will be OK --> 
+            
+            </p>
+          </field>
+        </record>        
+
+        <!-- ds.kunjungan action window -->
+        <record id="ds_kunjungan_action" model="ir.actions.act_window">
+          <field name="name">Riwayat Kunjungan</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="res_model">ds.kunjungan</field>
+          <field name="view_mode">tree,form</field>
+          <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+              <!-- Add Text Here -->
+            </p><p>
+              <!-- More details about what a user can do with this object will be OK --> 
+            
+            </p>
+          </field>
+        </record>
+
+        <!-- ds.alergi.pasien action window -->
+        <record id="ds_alergi_pasien_action" model="ir.actions.act_window">
+          <field name="name">Riwayat Alergi</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="res_model">ds.alergi.pasien</field>
+          <field name="view_mode">tree,form</field>
+          <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+              <!-- Add Text Here -->
+            </p><p>
+              <!-- More details about what a user can do with this object will be OK --> 
+            
+            </p>
+          </field>
+        </record>
+
         <!-- ds.data.pasien action window -->
         <record id="ds_data_pasien_action" model="ir.actions.act_window">
         <field name="name">Data Pasien</field>
@@ -180,9 +339,13 @@
             </field>
         </record>
 
-        <menuitem id="menu_ds_hospital_root" name="Pasien" parent="ds_base_hospital_menu_root" action="ds_pasien_action" sequence="10"/> 
-        <menuitem id="menu_data_pasien_act" name="Data Pasien" parent="ds_pengaturan_menu_categ" action="ds_data_pasien_action" sequence="20"/>
+      <menuitem id="menu_ds_data_baru_categ" name=" Data Pasien Baru dan Lama" parent="ds_pasien_menu_categ"  sequence="10"/>
+        <menuitem id="menu_ds_pasien_act" name="Pendaftaran Pasien" parent="menu_ds_data_baru_categ" action="ds_pasien_action" sequence="20"/> 
+        <menuitem id="menu_ds_data_pasien_act" name="Data Pasien" parent="menu_ds_data_baru_categ" action="ds_data_pasien_action" sequence="30"/>
+        <menuitem id="menu_ds_alergi_pasien_act" name="Riwayat Alergi" parent="menu_ds_data_baru_categ" action="ds_alergi_pasien_action" sequence="40"/>
+        <menuitem id="menu_ds_kunjungan_act" name="Riwayat Kunjungan" parent="menu_ds_data_baru_categ" action="ds_kunjungan_action" sequence="50"/>
+        <menuitem id="menu_ds_poli_act" name="Data Poli" parent="menu_ds_data_baru_categ" action="ds_poli_action" sequence="60"/>
         <!-- <menuitem id="ds_menu_pasien_root" name="Pasien" parent="menu_ds_hospital_root" sequence="20"/> -->
-        <!-- <menuitem id="ds_menu_pasien_manage" name="Manajemen Pasien" parent="ds_menu_pasien_root" action="action_ds_pasien" sequence = "30"/> -->
+        
         </data>
 </odoo>
