@@ -1,7 +1,62 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
         <data>
-            
-            
+            <!-- ds.rawat.jalan tree view -->
+            <record id="ds_rawat_jalan_view_tree" model="ir.ui.view">
+                <field name="name">ds.rawat.jalan.view.tree</field>
+                <field name="model">ds.rawat.jalan</field>
+                <field name="arch" type="xml">
+                        <tree>
+                            <field name="name"/>
+                            <field name="pasien_id"/>
+                            <field name="poli_id"/>
+                            <field name="dokter_id"/>
+                            <field name="tanggal_kunjungan"/>
+                            <field name="rujukan"/>
+                                
+                        </tree>
+                </field>
+            </record>
+            <!-- ds.rawat.jalan form view -->
+            <record id="ds_rawat_jalan_view_form" model="ir.ui.view">
+                <field name="name">ds.rawat.jalan.view.form</field>
+                <field name="model">ds.rawat.jalan</field>
+                <field name="arch" type="xml">
+                        <form string="Rawat Jalan">
+                                <sheet>
+                                        <group>
+                                           <field name="tanggal"/>
+                                           <field name="pasien_id"/>
+                                           <field name="poli_id"/>
+                                           <field name="dokter_id" domain="[('user_id','=',uid)]"/>
+                                        </group>
+                                        <group>
+                                           <field name="keluhan"/>
+                                           <field name="diagnosis_awal"/>
+                                           <field name="rujukan"/>
+                                        </group>
+                                </sheet>
+                        </form>
+                </field>
+            </record>
+
+            <!-- ds.rawat.jalan action window -->
+            <record id="ds_rawat_jalan_action" model="ir.actions.act_window">
+                <field name="name">Rawat Jalan</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">ds.rawat.jalan</field>
+                <field name="view_mode">tree,form</field>
+                <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                                <!-- Add Text Here -->
+                        </p><p>
+                                <!-- More details about what a user can do with this object will be OK --> 
+                        
+                        </p>
+                </field>
+            </record>
+
+            <menuitem id="ds_pasien_rawat_jalan_menu_categ" name="Pasien Rawat Jalan" parent="ds_rawat_jalan_menu_categ" sequence="40"/>
+            <menuitem id="ds_data_rawat_jalan_menu_act" name="Data Rawat Jalan" action="ds_rawat_jalan_action" parent="ds_pasien_rawat_jalan_menu_categ" sequence="50"/>
         </data>
 </odoo>

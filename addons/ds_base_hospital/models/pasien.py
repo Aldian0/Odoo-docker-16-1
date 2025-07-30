@@ -27,13 +27,13 @@ class DsPAsien(models.Model):
     kontak_darurat_hubungan = fields.Char(string="Hubungan")
     nomor_asuransi          = fields.Char(string="Nomor Asuransi")
 
-    propinsi_id             = fields.Many2one('wilayah.propinsi', string="Provinsi")
-    kota_id                 = fields.Many2one('wilayah.kota', string="Kota")
-    kabupaten_id            = fields.Many2one('wilayah.kabupaten', string="Kabupaten")
-    kecamatan_id            = fields.Many2one('wilayah.kecamatan', string="Kecamatan")
-    desa_id                 = fields.Many2one('wilayah.desa', string="Desa")
+    propinsi_id             = fields.Many2one('wilayah.propinsi', string="Provinsi", store=True)
+    kota_id                 = fields.Many2one('wilayah.kota', string="Kota", store=True)
+    kabupaten_id            = fields.Many2one('wilayah.kabupaten', string="Kabupaten", store=True)
+    kecamatan_id            = fields.Many2one('wilayah.kecamatan', string="Kecamatan", store=True)
+    desa_id                 = fields.Many2one('wilayah.desa', string="Desa", store=True)
 
-    alamat                  = fields.Text(string='Alamat')
+    alamat                  = fields.Text(string='Alamat', store=True)
 
     age                     = fields.Integer(string='Umur')
     no_rm                   = fields.Char(string='No. Rekam Medis', readonly=True, copy=False, default='New')

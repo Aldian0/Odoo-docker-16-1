@@ -1,3 +1,3 @@
-from odoo import models, fields
+from odoo import models, fields, api
 # akun admin/operator
 

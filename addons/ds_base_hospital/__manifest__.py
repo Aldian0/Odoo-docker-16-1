@@ -31,6 +31,8 @@
         'views/menu.xml',
         'views/pasien.xml',
         'views/wilayah.xml',
+        'views/rawat_jalan.xml',
+        'views/rawat_inap.xml',
         
         
     ],
