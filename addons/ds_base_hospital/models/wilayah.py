@@ -6,7 +6,7 @@ class WilayahPropinsi(models.Model):
 
     name = fields.Char(string="Nama", required=True)
 
-    # kota_ids = fields.One2many(comodel_name='wilayah.propinsi', inverse_name='propinsi_id', string='Daftar Kota')    
+    # kota_ids = fields.One2many('wilayah.propinsi', 'propinsi_id', string='Kota/Kabupaten')    
 
 class WilayahKota(models.Model):
     _name = 'wilayah.kota'
@@ -15,7 +15,8 @@ class WilayahKota(models.Model):
     name = fields.Char(string="Nama Kota", required=True)
 
     propinsi_id = fields.Many2one(comodel_name='wilayah.propinsi', string="Propinsi", required=True)
-    # kecamatan_ids = fields.One2many(comodel_name='wilayah.kecamatan', inverse_name='kota_id', string='Daftar Kecamatan')
+
+    # kecamatan_ids = fields.One2many('wilayah.kecamatan', 'kota_id', string='Daftar Kecamatan')
 
 class WilayahKecamatan(models.Model):
     _name = 'wilayah.kecamatan'
@@ -24,7 +25,8 @@ class WilayahKecamatan(models.Model):
     name = fields.Char(string="Nama Kecamatan", required=True)
 
     kota_id = fields.Many2one(comodel_name='wilayah.kota', string="Kota", required=True)
-    # desa_ids = fields.One2many(comodel_name='wilayah.desa', inverse_name='kecamatan_id', string='Daftar Desa')
+
+    # desa_ids = fields.One2many('wilayah.desa', 'kecamatan_id', string='Daftar Desa')
 
 class WilayahDesa(models.Model):
     _name = 'wilayah.desa'

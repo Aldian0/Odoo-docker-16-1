@@ -21,7 +21,7 @@
                 <field name="name">ds.rawat.inap.view.form</field>
                 <field name="model">ds.rawat.inap</field>
                 <field name="arch" type="xml">
-                        <form string="">
+                        <form string="Rawat Inap">
                                 <sheet>
                                         <group>
                                                 <field name="pasien_id"/>
@@ -29,6 +29,7 @@
                                                 <field name="tempat_tidur"/>
                                                 <field name="tanggal_masuk"/>
                                                 <field name="tanggal_keluar"/>
+                                                <field name="rujukan"/>
                                                 
                                         </group>
                                         <notebook>
@@ -36,7 +37,7 @@
                                                 <field name="kondisi_pasien"/>
                                         </page>
                                         <page string="Tindakan Medis">
-                                                <field name="tindakan_ids">
+                                                <field name="tindakan_medis_ids">
                                                 <tree editable="bottom">
                                                         <field name="tanggal"/>
                                                         <field name="tindakan"/>
@@ -45,6 +46,16 @@
                                                         </tree>
                                                 </field>
                                         </page>
+                                        <page string="Alergi Pasien">
+                                            <field name="alergi_ids">
+                                                <tree>
+                                                <field name="name_alergi"/>
+                                                <field name="tingkat_keparahan"/>
+                                                <field name="reaksi"/>
+                                                <field name="catatan"/>
+                                                </tree>
+                                        </field>
+                                        </page>
                                                 <page string="Catatan">
                                                         <field name="catatan_dokter"/>
                                                         <field name="catatan_perawat"/>
@@ -52,6 +63,57 @@
                                         </notebook>
                                 </sheet>
                         </form>
+                </field>
+            </record>
+
+            <!-- ds.tindakan.medis tree view -->
+            <record id="ds_tindakan_medis_view_tree" model="ir.ui.view">
+                <field name="name">ds.tindakan.medis.view.tree</field>
+                <field name="model">ds.tindakan.medis</field>
+                <field name="arch" type="xml">
+                        <tree>
+                                <field name="tanggal"/>
+                                <field name="pasien_id"/>
+                                <field name="dokter_id"/>
+                                <field name="deskripsi"/>
+                                
+                        </tree>
+                </field>
+            </record>
+
+            <!-- ds.tindakan.medis form view -->
+            <record id="ds_tindakan_medis_view_form" model="ir.ui.view">
+                <field name="name">ds.tindakan.medis.view.form</field>
+                <field name="model">ds.tindakan.medis</field>
+                <field name="arch" type="xml">
+                        <form string="Tindakan Medis">
+                                <sheet>
+                                        <group>
+                                                <field name="tanggal"/>
+                                                <field name="rawat_inap_id"/>
+                                                <field name="pasien_id" readonly="1"/>
+                                                <field name="dokter_id"/>
+                                                <field name="perawat_id"/>
+                                                <field name="deskripsi"/>  
+                                        </group>
+                                </sheet>
+                        </form>
+                </field>
+            </record>
+
+            <!-- ds.tindakan.medis action window -->
+            <record id="ds_tindakan_medis_action" model="ir.actions.act_window">
+                <field name="name">Tindakan Medis</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">ds.tindakan.medis</field>
+                <field name="view_mode">tree,form</field>
+                <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                                <!-- Add Text Here -->
+                        </p><p>
+                                <!-- More details about what a user can do with this object will be OK --> 
+                        
+                        </p>
                 </field>
             </record>
             <!-- ds.rawat.inap action window -->
@@ -70,7 +132,8 @@
                 </field>
             </record>
             <!-- This Menu Item must have a parent and an action -->
-            <menuitem id="ds_pasien_rawat_inap_menu_categ" name="Pasien Rawat Inap" parent="ds_rawat_jalan_menu_categ" sequence="10"/>
-            <menuitem id="ds_data_rawat_inap_menu_act" name="Data Rawat Inap" action="ds_rawat_inap_action" parent="ds_pasien_rawat_inap_menu_categ" sequence="20"/>
+            <!-- <menuitem id="ds_pasien_rawat_inap_menu_categ" name="Pasien Rawat Inap" parent="ds_rawat_jalan_menu_categ" sequence="10"/> -->
+            <menuitem id="ds_data_rawat_inap_menu_act" name="Data Rawat Inap" action="ds_rawat_inap_action" parent="ds_pasien_rawat_jalan_menu_categ" sequence="20"/>
+            <menuitem id="ds_tindakan_medis_menu_act" name="Tindakan Medis" action="ds_tindakan_medis_action" parent="ds_pasien_rawat_jalan_menu_categ" sequence="60"/>
         </data>
 </odoo>

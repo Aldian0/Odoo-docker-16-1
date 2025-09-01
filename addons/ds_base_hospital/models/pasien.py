@@ -5,7 +5,7 @@ from odoo import models, fields, api
 class DsPAsien(models.Model):
     _name = 'ds.pasien'
     _description = 'Ds Pasien'
-    # _inherit     = ['mail.thread', 'mail.activity.mixin']
+    
 
     READONLY_STATES         = {'proses': [('readonly', True)], 'done': [('readonly', True)]}
     STATE = [
@@ -81,9 +81,23 @@ class DsPAsien(models.Model):
         ('bps kesehatan', 'BPJS Kesehatan'),
     ], string="Asuransi")
 
+    rawat_jalan_ids     = fields.One2many('ds.rawat.jalan', 'pasien_id', string="Rawat Jalan")
+    rawat_inap_ids      = fields.One2many('ds.rawat.inap', 'pasien_id', string="Rawat Inap")
+    kunjungan_ids       = fields.One2many('ds.kunjungan', 'pasien_id', string="Riwayat Kunjungan")
+    alergi_ids          = fields.One2many('ds.alergi.pasien', 'pasien_id', string="Alergi Pasien")
+    tindakan_medis_ids  = fields.One2many('ds.tindakan.medis', 'pasien_id', string="Tindakan Medis")
+
     @api.onchange('propinsi_id')
     def _onchange_propinsi(self):
+      if not self.propinsi_id or not self.propinsi_id.exists():
         self.kota_id = False
+        self.kabupaten_id = False
+        self.kecamatan_id = False
+        self.desa_id = False
+    
+    @api.onchange('kota_id')
+    def _onchange_kota(self):
+      if not self.kota_id or not self.kota_id.exists():
         self.kabupaten_id = False
         self.kecamatan_id = False
         self.desa_id = False
@@ -111,34 +125,23 @@ class DsPAsien(models.Model):
         for rec in self:
             rec.state = 'done'
 
-class DsDataPasien(models.Model):
-    _name = 'ds.data.pasien'
-    _description = 'Ds Data Pasien'
 
-    name_id                 = fields.Char(string='Nama Lengkap', required=True)
-    no_rm                   = fields.Char(string='No. Rekam Medis')
-    nik                     = fields.Char(string='NIK', size=16)
-    jenis_kelamin = fields.Selection([
-        ('male','Laki-Laki'),
-        ('female','Perempuan')
-        ], string='Jenis Kelamin')
-    tempat_lahir            = fields.Char(string='Tempat Lahir')
-    tanggal_lahir           = fields.Date(string='Tanggal Lahir')
-    alamat                  = fields.Text(string='Alamat')
-    telepon                 = fields.Char(string='Nomor Telepon')
-    email                   = fields.Char(string='Email')
-    status = fields.Selection([
-        ('aktif', 'Aktif'),
-        ('nonaktif', 'Nonaktif')
-    ], string='Status', default='aktif')
+    
 
 class DsAlergiPasien(models.Model):
     _name = 'ds.alergi.pasien'
     _description = 'Ds Alergi Pasien'
 
-    name = fields.Char(string='Nama Alergi', required=True)
-    deskripsi = fields.Text(string='Deskripsi')
+    name_alergi = fields.Char(string='Jenis Alergi', required=True)
+    tingkat_keparahan = fields.Selection([
+        ('ringan', 'Ringan'),
+        ('sedang', 'Sedang'),
+        ('berat', 'Berat')
+    ], string='Tingkat Keparahan', required=True)
+    reaksi = fields.Text(string='Reaksi yang Terjadi')
+    catatan = fields.Text(string='Catatan Tambahan')
     pasien_id = fields.Many2one('ds.pasien', string='Pasien', required=True)
+    
 
 class DsKunjungan(models.Model):
     _name = 'ds.kunjungan'
@@ -155,6 +158,7 @@ class DsKunjungan(models.Model):
         ('rawat_inap', 'Rawat Inap'),
         ('selesai', 'Selesai')
     ], string='Rujukan') 
+
     upload_hasil_riwayat_kunjungan  = fields.Binary(string='Upload Hasil Gambar')
     keterangan                      = fields.Text(string='Keterangan',  compute='_compute_peringatan')
     
@@ -165,8 +169,10 @@ class DsPoli(models.Model):
     _name = 'ds.poli'
     _description = 'Data Poli Rumah Sakit'
 
-    pasien_id = fields.Many2one('ds.pasien', string='Pasien', required=True)
-    nama_poli = fields.Selection([
+    # pasien_id = fields.Many2one('ds.pasien', string='Pasien', required=True)
+    name = fields.Char(string='Nama Poli', required=True)
+    kode_poli = fields.Char(string='Kode Poli', required=True)
+    spesialisasi = fields.Selection([
         ('Umum', 'Poli Umum'),
         ('Gigi', 'Poli Gigi'),
         ('Anak', 'Poli Anak'),
@@ -177,15 +183,40 @@ class DsPoli(models.Model):
         ('Mata', 'Poli Mata'),
         ('Saraf', 'Poli Saraf'),
         ('Kulit dan Kelamin', 'Poli Kulit dan Kelamin')
-    ], string='Nama Poli')
-    keterangan = fields.Text(string='Keterangan')
+    ], string='Spesialisai Dokter')
+    deskripsi = fields.Text(string='Deskripsi')
+    aktif = fields.Boolean(string='Aktif', default=True)
+    dokter_ids = fields.One2many('ds.dokter', 'poli_id', string='Dokter')
+    jadwal_praktek = fields.Selection([
+        ('Senin - Jumat', '08:00 - 14:00'),
+        ('Sabtu & Minggu', '10:00 - 12:00'),
+        ('Setiap Hari', '24 Jam (UGD)')
+    ], string='Jadwal Praktek')
+
+class DsDokter(models.Model):
+    _name = 'ds.dokter'
+    _description = 'Dokter Rumah Sakit'
+
+    name = fields.Char(string='Nama Dokter', required=True)
+    spesialisasi = fields.Selection([
+        ('Umum', 'Poli Umum'),
+        ('Gigi', 'Poli Gigi'),
+        ('Anak', 'Poli Anak'),
+        ('Kandungan', 'Poli Kandungan'),
+        ('Penyakit Dalam', 'Poli Penyakit Dalam'),
+        ('Bedah', 'Poli Bedah'),
+        ('THT', 'Poli THT'),
+        ('Mata', 'Poli Mata'),
+        ('Saraf', 'Poli Saraf'),
+        ('Kulit dan Kelamin', 'Poli Kulit dan Kelamin')
+    ], string='Spesialisai Dokter')
+    poli_id = fields.Many2one('ds.poli', string='Poli')
+    jadwal_praktek = fields.Selection([
+        ('Senin - Jumat', '08:00 - 14:00'),
+        ('Sabtu & Minggu', '10:00 - 12:00'),
+        ('Setiap Hari', '24 Jam (UGD)')
+    ], string='Jadwal Praktek')
 
 
-# class DsWilayah (models.Models):
-#     _name = 'wilayah.kota'
-#     _description = 'Kota'
 
-#     kota_id = fields.Many2one('wilayah.kota', string="Kota")
-#     kabupaten_id = fields.Many2one('wilayah.kabupaten', string="Kabupaten")
-#     kecamatan_id = fields.Many2one('wilayah.kecamatan', string="Kecamatan")
-#     desa_id = fields.Many2one('wilayah.desa', string="Desa")
+

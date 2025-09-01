@@ -18,8 +18,12 @@ class DsRawatJalan(models.Model):
         ('rawat_inap', 'Rawat Inap'),
         ('tidak', 'Tidak Dirujuk')
     ], string='Rujukan', default='tidak')
+    rujuk_rawat_inap = fields.Boolean(string="Rujuk ke Rawat Inap")
+    rawat_inap_id = fields.One2many('ds.rawat.inap', 'rawat_jalan_id', string="Rawat Inap")
 
     tanggal_kunjungan = fields.Datetime(string='Tanggal Kunjungan', default=fields.Datetime.now)
+
+    alergi_ids = fields.One2many(related='pasien_id.alergi_ids', string='Alergi Pasien', readonly=True)
 
     @api.model
     def create(self, vals):

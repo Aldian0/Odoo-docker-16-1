@@ -71,9 +71,9 @@
                       <page name="Data Wilayah" string="Data Wilayah Pasien">
                       <group>
                         <field name="propinsi_id"/>
-                        <field name="kota_id" domain="[('propinsi_id', '=', propinsi_id)]"/>
-                        <field name="kecamatan_id" domain="[('kota_id', '=', kota_id)]"/>
-                        <field name="desa_id" domain="[('kecamatan_id', '=', kecamatan_id)]"/>
+                        <field name="kota_id" domain="[('propinsi_id', '=', propinsi_id)]" attrs="{'invisible': [('propinsi_id', '=', False)]}"/>
+                        <field name="kecamatan_id" domain="[('kota_id', '=', kota_id)]" attrs="{'invisible': [('kota_id', '=', False)]}"/>
+                        <field name="desa_id" domain="[('kecamatan_id', '=', kecamatan_id)]" attrs="{'invisible': [('kecamatan_id', '=', False)]}"/>
                       </group>
                       </page>
 
@@ -96,68 +96,54 @@
                   </group>
                 </page>
 
-                 </notebook>
+                <!-- Tab Rawat Inap -->
+                <page string="Rawat Inap">
+                <field name="rawat_inap_ids">
+                  <tree>
+                    <field name="kamar_id"/>
+                    <field name="tanggal_masuk"/>
+                    <field name="tanggal_keluar"/>
+                    <field name="rujukan"/>
+                  </tree>
+                </field>
+              </page>
 
-                </sheet>
-              </field>
-            </record>
+                <!-- Tab Tindakan Medis -->
+                <page string="Tindakan Medis">
+                  <field name="tindakan_medis_ids">
+                    <tree>
+                      <field name="tanggal"/>
+                      <field name="dokter_id"/>
+                      <field name="tindakan"/>
+                    </tree>
+                  </field>
+                </page>
 
-        <!-- ds.data.pasien tree view -->
-        <record id="ds_data_pasien_view_tree" model="ir.ui.view">
-          <field name="name">ds.data.pasien.view.tree</field>
-          <field name="model">ds.data.pasien</field>
-          <field name="arch" type="xml">
-            <tree string="Daftar Pasien" default_order="create_date desc">
-              <field name="name_id"/>
-              <field name="no_rm"/>
-              <field name="nik"/>
-              <field name="jenis_kelamin"/>
-              <field name="tempat_lahir"/>
-              <field name="status"/>
-            </tree>
+                <page string="Alergi">
+                <field name="alergi_ids">
+                    <tree editable="bottom">
+                        <field name="name_alergi"/>
+                        <field name="tingkat_keparahan"/>
+                        <field name="reaksi"/>
+                        <field name="catatan"/>
+                    </tree>
+                  </field>
+                </page>
+              </notebook>
+            </sheet>
           </field>
         </record>
 
-        <!-- ds.data.pasien form view -->
-        <record id="ds_data_pasien_view_form" model="ir.ui.view">
-          <field name="name">ds.data.pasien.view.form</field>
-          <field name="model">ds.data.pasien</field>
-          <field name="arch" type="xml">
-            <form string="Data Pasien">
-              <sheet>
-                <group>
-                  <field name="name_id"/>
-                  <field name="no_rm"/>
-                  <field name="nik"/>
-                  <field name="jenis_kelamin"/>
-                </group>
-                <group>
-                  <field name="tanggal_lahir"/>
-                  <field name="alamat"/>
-                  <field name="status"/>
-                </group>
-              <notebook>
-                  <page string="Kontak">
-                <group>
-                  <field name="telepon"/>
-                  <field name="email"/>
-                </group>
-                    
-                  </page>
-                </notebook>
-              </sheet>
-            </form>
-          </field>
-        </record>
 
         <!-- ds.alergi.pasien tree view -->
         <record id="ds_alergi_pasien_view_tree" model="ir.ui.view">
           <field name="name">ds.alergi.pasien.view.tree</field>
           <field name="model">ds.alergi.pasien</field>
           <field name="arch" type="xml">
-            <tree>
-              <field name="name"/>
+            <tree string="Daftar Alergi">
               <field name="pasien_id"/>
+              <field name="name_alergi"/>
+              <field name="tingkat_keparahan"/>
               
             </tree>
           </field>
@@ -168,13 +154,14 @@
           <field name="name">ds.alergi.pasien.view.form</field>
           <field name="model">ds.alergi.pasien</field>
           <field name="arch" type="xml">
-            <form string="Riwayat Alergi Pasien">
+            <form string="Alergi Pasien">
               <sheet>
                 <group>
-                  <field name="name"/>
-                  <field name="deskripsi"/>
                   <field name="pasien_id"/>
-                  
+                  <field name="name_alergi"/>
+                  <field name="tingkat_keparahan"/>
+                  <field name="reaksi"/>
+                  <field name="catatan"/>
                 </group>
               </sheet>
             </form>
@@ -236,8 +223,9 @@
           <field name="model">ds.poli</field>
           <field name="arch" type="xml">
             <tree>
-              <field name="pasien_id"/>
-              <field name="keterangan"/>
+                <field name="kode_poli"/>
+                <field name="name"/>
+                <field name="aktif"/>
               
             </tree>
           </field>
@@ -251,15 +239,28 @@
             <form string="Data Poli">
               <sheet>
                 <group>
-                  <field name="pasien_id"/>
-                  <field name="nama_poli"/>
-                  <field name="keterangan"/>
-                  
+                  <field name="kode_poli"/>
+                  <field name="name"/>
+                  <field name="aktif"/>
                 </group>
-              </sheet>
+                <group>
+                  <field name="deskripsi"/>
+                </group>
+                <notebook>
+                        <page string="Dokter di Poli Ini">
+                            <field name="dokter_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="spesialisasi"/>
+                                    <field name="jadwal_praktek"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
-          </field>
-        </record>
+        </field>
+    </record>
 
         <!-- ds.poli action window -->
         <record id="ds_poli_action" model="ir.actions.act_window">
@@ -309,18 +310,6 @@
           </field>
         </record>
 
-        <!-- ds.data.pasien action window -->
-        <record id="ds_data_pasien_action" model="ir.actions.act_window">
-        <field name="name">Data Pasien</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">ds.data.pasien</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-          <p class="o_view_nocontent_smiling_face">Buat pasien baru</p>
-          <p>Silakan tambahkan data pasien seperti nama, nomor rekam medis, dan informasi lainnya.</p>
-        </field>
-      </record>
-
 
 
         <!-- ds.pasien action window -->
@@ -341,7 +330,6 @@
 
       <menuitem id="menu_ds_data_baru_categ" name=" Data Pasien Baru dan Lama" parent="ds_pasien_menu_categ"  sequence="10"/>
         <menuitem id="menu_ds_pasien_act" name="Pendaftaran Pasien" parent="menu_ds_data_baru_categ" action="ds_pasien_action" sequence="20"/> 
-        <menuitem id="menu_ds_data_pasien_act" name="Data Pasien" parent="menu_ds_data_baru_categ" action="ds_data_pasien_action" sequence="30"/>
         <menuitem id="menu_ds_alergi_pasien_act" name="Riwayat Alergi" parent="menu_ds_data_baru_categ" action="ds_alergi_pasien_action" sequence="40"/>
         <menuitem id="menu_ds_kunjungan_act" name="Riwayat Kunjungan" parent="menu_ds_data_baru_categ" action="ds_kunjungan_action" sequence="50"/>
         <menuitem id="menu_ds_poli_act" name="Data Poli" parent="menu_ds_data_baru_categ" action="ds_poli_action" sequence="60"/>

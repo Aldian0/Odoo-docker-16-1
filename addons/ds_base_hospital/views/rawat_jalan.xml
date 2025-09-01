@@ -7,12 +7,10 @@
                 <field name="model">ds.rawat.jalan</field>
                 <field name="arch" type="xml">
                         <tree>
-                            <field name="name"/>
-                            <field name="pasien_id"/>
-                            <field name="poli_id"/>
-                            <field name="dokter_id"/>
-                            <field name="tanggal_kunjungan"/>
-                            <field name="rujukan"/>
+                                <field name="pasien_id"/>
+                                <field name="tanggal_kunjungan"/>
+                                <field name="poli_id"/>
+                                <field name="dokter_id"/>
                                 
                         </tree>
                 </field>
@@ -25,20 +23,40 @@
                         <form string="Rawat Jalan">
                                 <sheet>
                                         <group>
-                                           <field name="tanggal"/>
                                            <field name="pasien_id"/>
+                                           <field name="tanggal_kunjungan"/>
                                            <field name="poli_id"/>
+                                           <field name="keluhan"/>
+                                           <field name="diagnosis_awal"/>
+                                           <field name="rujuk_rawat_inap"/>
                                            <field name="dokter_id" domain="[('user_id','=',uid)]"/>
                                         </group>
-                                        <group>
+
+                                <notebook>
+                                    <page string="Rawat Inap (Jika Dirujuk)">
+                                        <field name="rawat_inap_id">
+                                         <tree>
                                            <field name="keluhan"/>
                                            <field name="diagnosis_awal"/>
                                            <field name="rujukan"/>
-                                        </group>
-                                </sheet>
-                        </form>
-                </field>
-            </record>
+                                        </tree>
+                                           </field>
+                                        </page>
+                                        <page string="Alergi Pasien">
+                                        <field name="alergi_ids">
+                                                <tree>
+                                                <field name="name_alergi"/>
+                                                <field name="tingkat_keparahan"/>
+                                                <field name="reaksi"/>
+                                                <field name="catatan"/>
+                                                </tree>
+                                        </field>
+                                        </page>
+                                </notebook>
+                        </sheet>
+                </form>
+        </field>
+</record>
 
             <!-- ds.rawat.jalan action window -->
             <record id="ds_rawat_jalan_action" model="ir.actions.act_window">
@@ -56,7 +74,7 @@
                 </field>
             </record>
 
-            <menuitem id="ds_pasien_rawat_jalan_menu_categ" name="Pasien Rawat Jalan" parent="ds_rawat_jalan_menu_categ" sequence="40"/>
+            <menuitem id="ds_pasien_rawat_jalan_menu_categ" name="Pasien Rawat Jalan dan Inap" parent="ds_rawat_jalan_menu_categ" sequence="40"/>
             <menuitem id="ds_data_rawat_jalan_menu_act" name="Data Rawat Jalan" action="ds_rawat_jalan_action" parent="ds_pasien_rawat_jalan_menu_categ" sequence="50"/>
         </data>
 </odoo>
