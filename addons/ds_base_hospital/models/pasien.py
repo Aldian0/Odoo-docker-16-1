@@ -17,8 +17,8 @@ class DsPAsien(models.Model):
 
 
 
-    name                    = fields.Char(string='Rumah Sakit', required=True)
-    name_id                 = fields.Char(string='Nama Lengkap', required=True)
+    hospital                = fields.Char(string='Rumah Sakit', required=True)
+    name                    = fields.Char(string='Nama Lengkap', required=True)
     tempat_lahir            = fields.Char(string="Tempat Lahir")
     email                   = fields.Char(string='Email')
 
@@ -81,10 +81,15 @@ class DsPAsien(models.Model):
         ('bps kesehatan', 'BPJS Kesehatan'),
     ], string="Asuransi")
 
+    # Relasi ke rawat jalan / rawat inap
     rawat_jalan_ids     = fields.One2many('ds.rawat.jalan', 'pasien_id', string="Rawat Jalan")
     rawat_inap_ids      = fields.One2many('ds.rawat.inap', 'pasien_id', string="Rawat Inap")
+
+    # Relasi ke kunjungan
     kunjungan_ids       = fields.One2many('ds.kunjungan', 'pasien_id', string="Riwayat Kunjungan")
-    alergi_ids          = fields.One2many('ds.alergi.pasien', 'pasien_id', string="Alergi Pasien")
+
+    # Relasi ke alergi pasien
+    alergi_ids          = fields.One2many('ds.alergi.pasien', 'pasien_id', string="Alergi Pasien", readonly=True, store=False)
     tindakan_medis_ids  = fields.One2many('ds.tindakan.medis', 'pasien_id', string="Tindakan Medis")
 
     @api.onchange('propinsi_id')

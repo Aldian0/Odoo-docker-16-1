@@ -10,7 +10,6 @@ class DsRawatInap(models.Model):
     tempat_tidur    = fields.Char(string="Tempat Tidur", required=True)
     tanggal_masuk   = fields.Datetime(string="Tanggal Masuk", default=fields.Datetime.now)
     tanggal_keluar  = fields.Datetime(string="Tanggal Keluar")
-    tindakan_ids    = fields.One2many('ds.tindakan.medis', 'rawat_inap_id', string="Tindakan Medis")
     catatan_dokter  = fields.Text(string="Catatan Dokter")
     catatan_perawat = fields.Text(string="Catatan Perawat")
     keluhan         = fields.Text(string='Keluhan')
@@ -27,8 +26,20 @@ class DsRawatInap(models.Model):
     ('menurun', 'Menurun'),
     ], string="Kondisi Pasien", default='stabil')
 
+    # 🔗 Related fields dari ds.pasien
+    no_rekam_medis  = fields.Char(related='pasien_id.no_rm', string="No Rekam Medis", store=True, readonly=True)
+    nama_pasien     = fields.Char(related='pasien_id.name', string="Nama Pasien", store=True, readonly=True)
+    tanggal_lahir   = fields.Date(related='pasien_id.tanggal_lahir', string="Tanggal Lahir", store=True, readonly=True)
+    jenis_kelamin   = fields.Selection(related='pasien_id.jenis_kelamin', string="Jenis Kelamin", store=True, readonly=True)
+    golongan_darah  = fields.Selection(related='pasien_id.gol_darah', string="Golongan Darah", store=True, readonly=True)
+    no_telp         = fields.Char(related='pasien_id.telepon', string="No. Telepon", store=True, readonly=True)
+    email           = fields.Char(related='pasien_id.email', string="Email", store=True, readonly=True)
+    alamat          = fields.Text(related='pasien_id.alamat', string="Alamat", store=True, readonly=True)
+
     tindakan_medis_ids = fields.One2many('ds.tindakan.medis', 'rawat_inap_id', string='Tindakan Medis')
-    alergi_ids = fields.One2many(related='pasien_id.alergi_ids', string='Alergi Pasien', readonly=True)
+    alergi_ids = fields.One2many(related='pasien_id.alergi_ids', string='Alergi Pasien', readonly=True, store=False)
+    
+
 
 
 class DsTindakanMedis(models.Model):
@@ -42,3 +53,18 @@ class DsTindakanMedis(models.Model):
     tanggal         = fields.Datetime(string="Tanggal", default=fields.Datetime.now)
     tindakan        = fields.Text(string="Tindakan")
     deskripsi       = fields.Text(string="Catatan")
+
+class DsAlergiPasien(models.Model):
+    _name = 'ds.alergi.pasien'
+    _description = 'Ds Alergi Pasien'
+
+    pasien_id = fields.Many2one('ds.pasien', string="Pasien", required=True, ondelete='cascade')
+    name_alergi = fields.Char(string="Nama Alergi",required=True)
+    tingkat_keparahan = fields.Selection([
+        ('ringan', 'Ringan'),
+        ('sedang', 'Sedang'),
+        ('berat', 'Berat'),
+        ('fatal', 'Fatal'),
+    ], string="Tingkat Keparahan", default='ringan')
+    reaksi = fields.Text(string="Reaksi")
+    catatan = fields.Text(string="Catatan")

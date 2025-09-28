@@ -6,13 +6,14 @@
                 <field name="name">ds.rawat.inap.view.tree</field>
                 <field name="model">ds.rawat.inap</field>
                 <field name="arch" type="xml">
-                        <tree>
-                                <field name="pasien_id"/>
-                                <field name="kamar_id"/>
-                                <field name="tempat_tidur"/>
+                        <tree string="Daftar Rawat Inap Pasien" default_order="tanggal_masuk desc">
+                                <field name="no_rekam_medis"/>
+                                <field name="nama_pasien"/>
                                 <field name="tanggal_masuk"/>
                                 <field name="tanggal_keluar"/>
-                                
+                                <field name="kamar_id"/>
+                                <field name="tempat_tidur"/>
+                                <field name="kondisi_pasien"/>
                         </tree>
                 </field>
             </record>
@@ -21,45 +22,62 @@
                 <field name="name">ds.rawat.inap.view.form</field>
                 <field name="model">ds.rawat.inap</field>
                 <field name="arch" type="xml">
-                        <form string="Rawat Inap">
+                        <form string="Data Rawat Inap">
                                 <sheet>
                                         <group>
-                                                <field name="pasien_id"/>
-                                                <field name="kamar_id"/>
-                                                <field name="tempat_tidur"/>
-                                                <field name="tanggal_masuk"/>
-                                                <field name="tanggal_keluar"/>
-                                                <field name="rujukan"/>
-                                                
-                                        </group>
-                                        <notebook>
-                                        <page string="Kondisi">
-                                                <field name="kondisi_pasien"/>
-                                        </page>
-                                        <page string="Tindakan Medis">
-                                                <field name="tindakan_medis_ids">
-                                                <tree editable="bottom">
-                                                        <field name="tanggal"/>
-                                                        <field name="tindakan"/>
-                                                        <field name="dokter_id"/>
-                                                        <field name="perawat_id"/>
-                                                        </tree>
-                                                </field>
-                                        </page>
-                                        <page string="Alergi Pasien">
-                                            <field name="alergi_ids">
-                                                <tree>
-                                                <field name="name_alergi"/>
-                                                <field name="tingkat_keparahan"/>
-                                                <field name="reaksi"/>
-                                                <field name="catatan"/>
-                                                </tree>
-                                        </field>
-                                        </page>
-                                                <page string="Catatan">
-                                                        <field name="catatan_dokter"/>
-                                                        <field name="catatan_perawat"/>
-                                                </page>
+                    <group>
+                        <field name="pasien_id"/>
+                        <field name="no_rekam_medis" readonly="1"/>
+                        <field name="nama_pasien" readonly="1"/>
+                        <field name="tanggal_lahir" readonly="1"/>
+                        <field name="jenis_kelamin" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="golongan_darah" readonly="1"/>
+                        <field name="no_telp" readonly="1"/>
+                        <field name="email" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="kamar_id"/>
+                        <field name="tempat_tidur"/>
+                        <field name="tanggal_masuk"/>
+                        <field name="tanggal_keluar"/>
+                        <field name="rujukan"/>
+                    </group>
+                </group>
+
+                <group>
+                    <field name="alamat" colspan="4" readonly="1"/>
+                </group>
+
+                <notebook>
+                    <page string="Tindakan Medis">
+                        <field name="tindakan_medis_ids">
+                            <tree editable="bottom">
+                                <field name="tanggal"/>
+                                <field name="tindakan"/>
+                                <field name="dokter_id"/>
+                                <field name="perawat_id"/>
+                                <field name="deskripsi"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page string="Alergi Pasien">
+                        <field name="alergi_ids" readonly="1">
+                            <tree>
+                                <field name="name_alergi"/>
+                                <field name="tingkat_keparahan"/>
+                                <field name="reaksi"/>
+                                <field name="catatan"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                    <page string="Catatan">
+                        <field name="catatan_dokter"/>
+                        <field name="catatan_perawat"/>
+                    </page>
                                         </notebook>
                                 </sheet>
                         </form>

@@ -46,7 +46,7 @@
                         <page name="Data Pasien" string="Data Pribadi Pasien">
                       <group>
                       <!-- Add your fields here -->
-                      <field name="name_id"/>
+                      <field name="name"/>
                       <field name="no_rm"/>
                       <field name="jenis_kelamin" widget="radio"/>
                       <field name="tanggal_lahir"/>
@@ -121,7 +121,7 @@
 
                 <page string="Alergi">
                 <field name="alergi_ids">
-                    <tree editable="bottom">
+                    <tree>
                         <field name="name_alergi"/>
                         <field name="tingkat_keparahan"/>
                         <field name="reaksi"/>
