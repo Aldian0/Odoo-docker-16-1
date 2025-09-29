@@ -2,7 +2,7 @@ from odoo import models, fields, api
 
 
 
-class DsPAsien(models.Model):
+class DsPasien(models.Model):
     _name = 'ds.pasien'
     _description = 'Ds Pasien'
     
@@ -78,7 +78,7 @@ class DsPAsien(models.Model):
         ('axa mandiri', 'AXA Mandiri'),
         ('sinarmas msig life', 'Sinarmas MSIG Life'),
         ('bri life', 'BRI Life'),
-        ('bps kesehatan', 'BPJS Kesehatan'),
+        ('bpjs kesehatan', 'BPJS Kesehatan'),
     ], string="Asuransi")
 
     # Relasi ke rawat jalan / rawat inap
@@ -88,8 +88,8 @@ class DsPAsien(models.Model):
     # Relasi ke kunjungan
     kunjungan_ids       = fields.One2many('ds.kunjungan', 'pasien_id', string="Riwayat Kunjungan")
 
-    # Relasi ke alergi pasien
-    alergi_ids          = fields.One2many('ds.alergi.pasien', 'pasien_id', string="Alergi Pasien", readonly=True, store=False)
+    # Relasi ke alergi pasien & tindakan medis
+    alergi_ids          = fields.One2many('ds.alergi.pasien', 'pasien_id', string="Alergi Pasien", readonly=True, store=True)
     tindakan_medis_ids  = fields.One2many('ds.tindakan.medis', 'pasien_id', string="Tindakan Medis")
 
     @api.onchange('propinsi_id')
@@ -136,16 +136,18 @@ class DsPAsien(models.Model):
 class DsAlergiPasien(models.Model):
     _name = 'ds.alergi.pasien'
     _description = 'Ds Alergi Pasien'
+    _rec_name = 'name_alergi'
 
-    name_alergi = fields.Char(string='Jenis Alergi', required=True)
+    pasien_id = fields.Many2one('ds.pasien', string="Pasien", required=True, ondelete='cascade')
+    name_alergi = fields.Char(string="Nama Alergi",required=True)
     tingkat_keparahan = fields.Selection([
         ('ringan', 'Ringan'),
         ('sedang', 'Sedang'),
-        ('berat', 'Berat')
-    ], string='Tingkat Keparahan', required=True)
-    reaksi = fields.Text(string='Reaksi yang Terjadi')
-    catatan = fields.Text(string='Catatan Tambahan')
-    pasien_id = fields.Many2one('ds.pasien', string='Pasien', required=True)
+        ('berat', 'Berat'),
+        ('fatal', 'Fatal'),
+    ], string="Tingkat Keparahan", default='ringan')
+    reaksi = fields.Text(string="Reaksi")
+    catatan = fields.Text(string="Catatan")
     
 
 class DsKunjungan(models.Model):
@@ -164,11 +166,22 @@ class DsKunjungan(models.Model):
         ('selesai', 'Selesai')
     ], string='Rujukan') 
 
-    upload_hasil_riwayat_kunjungan  = fields.Binary(string='Upload Hasil Gambar')
-    keterangan                      = fields.Text(string='Keterangan',  compute='_compute_peringatan')
+    upload_hasil_kunjungan              = fields.Binary(string='Upload Hasil Gambar')
+    # keterangan                          = fields.Text(string='Keterangan',  compute='_compute_peringatan')
     
 
-    data_hasil_riwayat_kunjungan_ids    = fields.One2many('ds.kunjungan', 'pasien_id', string='Upload Hasil Riwayat Kunjungan')
+    hasil_kunjungan_ids    = fields.One2many('ds.hasil.kunjungan', 'kunjungan_id', string='Upload Hasil Riwayat Kunjungan')
+
+
+class DsHasilKunjungan(models.Model):
+    _name = 'ds.hasil.kunjungan'
+    _description = 'Hasil Kunjungan Pasien'
+
+    pasien_id       = fields.Many2one('ds.pasien', string='Pasien', required=True)
+    kunjungan_id = fields.Many2one('ds.kunjungan', string="Kunjungan", required=True, ondelete='cascade')
+    upload_file = fields.Binary(string="Upload Hasil Pemeriksaan")
+    catatan = fields.Text(string="Catatan")
+
 
 class DsPoli(models.Model):
     _name = 'ds.poli'

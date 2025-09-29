@@ -37,8 +37,20 @@ class DsRawatInap(models.Model):
     alamat          = fields.Text(related='pasien_id.alamat', string="Alamat", store=True, readonly=True)
 
     tindakan_medis_ids = fields.One2many('ds.tindakan.medis', 'rawat_inap_id', string='Tindakan Medis')
-    alergi_ids = fields.One2many(related='pasien_id.alergi_ids', string='Alergi Pasien', readonly=True, store=False)
+    # alergi_ids = fields.One2many(related='pasien_id.alergi_ids', string='Alergi Pasien', readonly=True, store=True)
+    alergi_ids = fields.Many2many(
+    'ds.alergi.pasien',
+    'ds_rawat_inap_alergi_rel',     # nama tabel relasi
+    'rawat_inap_id',                # kolom di tabel relasi yang mengacu ke ds.rawat.inap
+    'alergi_id',                    # kolom di tabel relasi yang mengacu ke ds.alergi.pasien
+    string='Alergi Pasien',
+    readonly=True
+)
     
+@api.depends('pasien_id')
+def _compute_alergi_ids(self):
+        for rec in self:
+            rec.alergi_ids = rec.pasien_id.alergi_ids if rec.pasien_id else False
 
 
 
@@ -57,6 +69,7 @@ class DsTindakanMedis(models.Model):
 class DsAlergiPasien(models.Model):
     _name = 'ds.alergi.pasien'
     _description = 'Ds Alergi Pasien'
+    _rec_name = 'name_alergi'
 
     pasien_id = fields.Many2one('ds.pasien', string="Pasien", required=True, ondelete='cascade')
     name_alergi = fields.Char(string="Nama Alergi",required=True)
