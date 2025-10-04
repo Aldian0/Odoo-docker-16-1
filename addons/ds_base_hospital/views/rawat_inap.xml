@@ -176,7 +176,7 @@
 
         <!-- ds.alergi.pasien action window -->
         <record id="ds_alergi_pasien_action" model="ir.actions.act_window">
-            <field name="name">ds.alergi.pasien.action</field>
+            <field name="name">Alergi Pasien</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">ds.alergi.pasien</field>
             <field name="view_mode">tree,form</field>
@@ -189,6 +189,7 @@
                 </p>
             </field>
         </record>
+
             <!-- ds.rawat.inap action window -->
             <record id="ds_rawat_inap_action" model="ir.actions.act_window">
                 <field name="name">Rawat Inap</field>

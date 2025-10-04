@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 
+
 class DsRawatInap(models.Model):
     _name = 'ds.rawat.inap'
     _description = 'Ds Rawat Inap'
@@ -39,19 +40,19 @@ class DsRawatInap(models.Model):
     tindakan_medis_ids = fields.One2many('ds.tindakan.medis', 'rawat_inap_id', string='Tindakan Medis')
     # alergi_ids = fields.One2many(related='pasien_id.alergi_ids', string='Alergi Pasien', readonly=True, store=True)
     alergi_ids = fields.Many2many(
-    'ds.alergi.pasien',
-    'ds_rawat_inap_alergi_rel',     # nama tabel relasi
-    'rawat_inap_id',                # kolom di tabel relasi yang mengacu ke ds.rawat.inap
-    'alergi_id',                    # kolom di tabel relasi yang mengacu ke ds.alergi.pasien
-    string='Alergi Pasien',
-    readonly=True
-)
+    "ds.alergi.pasien",
+    string="Alergi Pasien",
+    compute="_compute_alergi_ids",
+    store=False)
     
-@api.depends('pasien_id')
+@api.depends("pasien_id")
 def _compute_alergi_ids(self):
-        for rec in self:
-            rec.alergi_ids = rec.pasien_id.alergi_ids if rec.pasien_id else False
-
+    for rec in self:
+        if rec.pasien_id:
+            rec.alergi_ids = self.env["ds.alergi.pasien"].search([
+                ("pasien_id", "=", rec.pasien_id.id)]).ids  # ✅ penting: assign id list, bukan recordset
+        else:
+            rec.alergi_ids = []
 
 
 class DsTindakanMedis(models.Model):
@@ -61,7 +62,7 @@ class DsTindakanMedis(models.Model):
     pasien_id       = fields.Many2one('ds.pasien', string="Pasien", required=True)
     dokter_id       = fields.Many2one('ds.dokter', string="Dokter")
     perawat_id      = fields.Many2one('res.users', string="Perawat")
-    rawat_inap_id   = fields.Many2one('ds.rawat.inap', string="Rawat Inap", required=True, ondelete='cascade')
+    rawat_inap_id   = fields.Many2one('ds.rawat.inap', string="Rawat Inap", required=True)
     tanggal         = fields.Datetime(string="Tanggal", default=fields.Datetime.now)
     tindakan        = fields.Text(string="Tindakan")
     deskripsi       = fields.Text(string="Catatan")
@@ -69,7 +70,6 @@ class DsTindakanMedis(models.Model):
 class DsAlergiPasien(models.Model):
     _name = 'ds.alergi.pasien'
     _description = 'Ds Alergi Pasien'
-    _rec_name = 'name_alergi'
 
     pasien_id = fields.Many2one('ds.pasien', string="Pasien", required=True, ondelete='cascade')
     name_alergi = fields.Char(string="Nama Alergi",required=True)
@@ -81,3 +81,7 @@ class DsAlergiPasien(models.Model):
     ], string="Tingkat Keparahan", default='ringan')
     reaksi = fields.Text(string="Reaksi")
     catatan = fields.Text(string="Catatan")
+
+
+
+

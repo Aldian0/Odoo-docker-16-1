@@ -130,24 +130,21 @@ class DsPasien(models.Model):
         for rec in self:
             rec.state = 'done'
 
+# class DsAlergiPasien(models.Model):
+#     _name = 'ds.alergi.pasien'
+#     _description = 'Ds Alergi Pasien'
+#     _rec_name = 'name_alergi'
 
-    
-
-class DsAlergiPasien(models.Model):
-    _name = 'ds.alergi.pasien'
-    _description = 'Ds Alergi Pasien'
-    _rec_name = 'name_alergi'
-
-    pasien_id = fields.Many2one('ds.pasien', string="Pasien", required=True, ondelete='cascade')
-    name_alergi = fields.Char(string="Nama Alergi",required=True)
-    tingkat_keparahan = fields.Selection([
-        ('ringan', 'Ringan'),
-        ('sedang', 'Sedang'),
-        ('berat', 'Berat'),
-        ('fatal', 'Fatal'),
-    ], string="Tingkat Keparahan", default='ringan')
-    reaksi = fields.Text(string="Reaksi")
-    catatan = fields.Text(string="Catatan")
+#     pasien_id = fields.Many2one('ds.pasien', string="Pasien", required=True, ondelete='cascade')
+#     name_alergi = fields.Char(string="Nama Alergi",required=True)
+#     tingkat_keparahan = fields.Selection([
+#         ('ringan', 'Ringan'),
+#         ('sedang', 'Sedang'),
+#         ('berat', 'Berat'),
+#         ('fatal', 'Fatal'),
+#     ], string="Tingkat Keparahan", default='ringan')
+#     reaksi = fields.Text(string="Reaksi")
+#     catatan = fields.Text(string="Catatan")
     
 
 class DsKunjungan(models.Model):
